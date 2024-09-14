@@ -16,13 +16,5 @@ pipeline {
                 }
             }
         }
-        stage('Deploy Artifact') {
-           steps {
-                container('alacrity') {
-                    sh 'gcloud auth configure-docker us-central1-docker.pkg.dev'
-                    sh './mvnw -s /root/.m2/settings.xml clean deploy'
-                }
-            }
-        }
     }
 }
