@@ -26,12 +26,24 @@
 		<sonar.host.url>https://devops.alacritysys.com/sonar</sonar.host.url>
 		<sonar.login>squ_2da60f9c9a3380eff498d8b59b49bbe5f51ba750</sonar.login>
 		<app.base.image>openjdk:21-jdk</app.base.image>
-        <app.image>${project.artifactId}</app.image>
+        <app.image>us-central1-docker.pkg.dev/devops-353009/devops-docker/${project.artifactId}</app.image>
         <app.location>/app</app.location>
         <app.artifact>${project.artifactId}-${project.version}.jar</app.artifact>
         <app.cmd>java -jar ${app.artifact}</app.cmd>
         <app.port>8080</app.port>
 	</properties>
+	<distributionManagement>
+      <repository>
+        <id>release</id>
+        <name>release</name>
+        <url>artifactregistry://us-central1-maven.pkg.dev/devops-353009/maven-release</url>
+      </repository>
+      <snapshotRepository>
+        <id>snapshots</id>
+        <name>snapshots</name>
+        <url>artifactregistry://us-central1-maven.pkg.dev/devops-353009/maven-snapshot</url>
+      </snapshotRepository>
+    </distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -134,6 +146,13 @@
 							<goal>build</goal>
 						</goals>
 					</execution>
+					<execution>
+                        <id>push-on-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
 				</executions>
 			</plugin>
 		</plugins>
